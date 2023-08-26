@@ -1,30 +1,25 @@
+/* eslint-disable max-len */
 import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  // Define the initial state for the to-dos
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState('');
 
-  // Function to add a new to-do
   const addTodo = () => {
     if (newTodo.trim() !== '') {
-      setTodos([...todos, { text: newTodo, completed: false }]);
+      setTodos([...todos, { id: Date.now(), text: newTodo, completed: false }]);
       setNewTodo('');
     }
   };
 
-  // Function to toggle the completion status of a to-do
-  const toggleTodo = (index) => {
-    const updatedTodos = [...todos];
-    updatedTodos[index].completed = !updatedTodos[index].completed;
+  const toggleTodo = (id) => {
+    const updatedTodos = todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo));
     setTodos(updatedTodos);
   };
 
-  // Function to delete a to-do
-  const deleteTodo = (index) => {
-    const updatedTodos = [...todos];
-    updatedTodos.splice(index, 1);
+  const deleteTodo = (id) => {
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
     setTodos(updatedTodos);
   };
 
@@ -38,14 +33,35 @@ function App() {
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
         />
-        <button onClick={addTodo}>Add a Task</button>
+        <button type="button" onClick={addTodo}>
+          Add a Task
+        </button>
       </div>
       <ul className="todo-list">
-        {todos.map((todo, index) => (
-          <li key={index} className={todo.completed ? 'completed' : ''}>
-            <span onClick={() => toggleTodo(index)}>{todo.text}</span>
-            <button onClick={() => deleteTodo(index)}>Delete task</button>
-          </li>
+        {todos.map((todo) => (
+          <div
+            key={todo.id}
+            className={`todo-item ${todo.completed ? 'completed' : ''}`}
+            onClick={() => toggleTodo(todo.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                toggleTodo(todo.id);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+          >
+            {todo.text}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteTodo(todo.id);
+              }}
+            >
+              Delete task
+            </button>
+          </div>
         ))}
       </ul>
     </div>

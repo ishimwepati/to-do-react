@@ -1,5 +1,5 @@
-// src/components/AddTodoForm.js
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 function AddTodoForm({ addTodo }) {
   const [text, setText] = useState('');
@@ -24,5 +24,10 @@ function AddTodoForm({ addTodo }) {
     </form>
   );
 }
+
+// Prop validation
+AddTodoForm.propTypes = {
+  addTodo: PropTypes.func.isRequired,
+};
 
 export default AddTodoForm;
