@@ -30,21 +30,21 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Todo App</h1>
+      <h1>Waza To Do App</h1>
       <div className="todo-form">
         <input
           type="text"
-          placeholder="Add a new todo"
+          placeholder="Add a new task"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
         />
-        <button onClick={addTodo}>Add</button>
+        <button onClick={addTodo}>Add a Task</button>
       </div>
       <ul className="todo-list">
         {todos.map((todo, index) => (
           <li key={index} className={todo.completed ? 'completed' : ''}>
             <span onClick={() => toggleTodo(index)}>{todo.text}</span>
-            <button onClick={() => deleteTodo(index)}>Delete</button>
+            <button onClick={() => deleteTodo(index)}>Delete task</button>
           </li>
         ))}
       </ul>
